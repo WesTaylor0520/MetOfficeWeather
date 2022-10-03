@@ -43,15 +43,47 @@ def get3HourlyWeather(location):
     threeHourlyList = weatherJSON["SiteRep"]["DV"]["Location"]["Period"]
     numberOfDays = len(threeHourlyList)
 
+    midnight = "00:00"
+    threeam = "03:00"
+    sixam = "06:00"
+    nineam = "09:00"
+    midday = "12:00"
+    threepm = "15:00"
+    sixpm = "18:00"
+    ninepm = "21:00"
+
+    def formatConsoleDisplay(time):
+        print("Temperature at " + time + " is " + threeHourlyList[i]["Rep"][j]["T"] + "°C")
+        print("Feels like " + threeHourlyList[i]["Rep"][j]["F"] + "°C")
+        print("Humidity is " + threeHourlyList[i]["Rep"][j]["H"] + "%")
+        print("Precipitation probability is " + threeHourlyList[i]["Rep"][j]["Pp"] + "%")
+        print("Wind Speed is " + threeHourlyList[i]["Rep"][j]["S"] + "mph")
+        print("Wind Gust is " + threeHourlyList[i]["Rep"][j]["G"] + " mph")
+        print("Wind Direction is " + threeHourlyList[i]["Rep"][j]["D"] + "\n")
+
     for i in range(numberOfDays):
         print("----------------------------------------")
         date = threeHourlyList[i]["value"]
-        print(date[:-1])
+        print(date[:-1] + "\n")
         threeHourlyListReport = threeHourlyList[i]["Rep"]
         numberOfTemperatures = len(threeHourlyListReport)
         for j in range(numberOfTemperatures):
-            print("Temperature " + threeHourlyList[i]["Rep"][j]["T"])
-            print("Feels like " + threeHourlyList[i]["Rep"][j]["F"] + "\n")
+            if threeHourlyList[i]["Rep"][j]["$"] == "0":
+                formatConsoleDisplay(midnight)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "180":
+                formatConsoleDisplay(threeam)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "360":
+                formatConsoleDisplay(sixam)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "540":
+                formatConsoleDisplay(nineam)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "720":
+                formatConsoleDisplay(midday)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "900":
+                formatConsoleDisplay(threepm)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "1080":
+                formatConsoleDisplay(sixpm)
+            elif threeHourlyList[i]["Rep"][j]["$"] == "1260":
+                formatConsoleDisplay(ninepm)
 
 
 def main():
