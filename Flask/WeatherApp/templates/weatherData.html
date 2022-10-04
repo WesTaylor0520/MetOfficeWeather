@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block intro %}
+  <div>
+      {{welcome}}
+  </div>
+{% endblock intro %}
+{% block locations %}
+<table>
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Results</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for key, value in fiveDayWeatherResults.items() %}
+   <tr>
+       <td> {{ key }} </td>
+       <td>
+           {% for result in value %}
+               <ul>
+                   {% for data in result %}
+                       <li>{{ data }}</li>
+                   {% endfor %}
+               </ul>
+           {% endfor %}
+       </td>
+   </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock locations %}

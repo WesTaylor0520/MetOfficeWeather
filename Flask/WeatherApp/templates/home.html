@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block intro %}
+  <div>
+      {{welcome}}
+  </div>
+{% endblock intro %}
+{% block locations %}
+<table>
+  <thead>
+    <tr>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for key, value in locations.items() %}
+   <tr>
+       <td>
+           <form method="POST">
+               <input type="submit" name="location" value="{{ key }}"/>
+           </form>
+       </td>
+   </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock locations %}

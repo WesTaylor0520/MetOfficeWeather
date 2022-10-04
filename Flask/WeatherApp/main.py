@@ -31,9 +31,8 @@ def listOfLocations(data):
     locationList = {}
     for location in range(numberOfLocations):
         key = data["Locations"]["Location"][location]["name"]
-        value = data["Locations"]["Location"][location]["id"]
-        locationList[key] = value
-        print(data["Locations"]["Location"][location]["name"])
+        idValue = data["Locations"]["Location"][location]["id"]
+        locationList[key] = idValue
     return locationList
 
 
@@ -53,51 +52,44 @@ def get3HourlyWeather(location):
     ninepm = "21:00"
 
     def formatConsoleDisplay(time):
-        print("Temperature at " + time + " is " + threeHourlyList[i]["Rep"][j]["T"] + "°C")
-        print("Feels like " + threeHourlyList[i]["Rep"][j]["F"] + "°C")
-        print("Humidity is " + threeHourlyList[i]["Rep"][j]["H"] + "%")
-        print("Precipitation probability is " + threeHourlyList[i]["Rep"][j]["Pp"] + "%")
-        print("Wind Speed is " + threeHourlyList[i]["Rep"][j]["S"] + "mph")
-        print("Wind Gust is " + threeHourlyList[i]["Rep"][j]["G"] + " mph")
-        print("Wind Direction is " + threeHourlyList[i]["Rep"][j]["D"] + "\n")
+        day = ["Temperature at " + time + " is " + threeHourlyList[i]["Rep"][j]["T"] + "°C",
+               "Feels like " + threeHourlyList[i]["Rep"][j]["F"] + "°C",
+               "Humidity is " + threeHourlyList[i]["Rep"][j]["H"] + "%",
+               "Precipitation probability is " + threeHourlyList[i]["Rep"][j]["Pp"] + "%",
+               "Wind Speed is " + threeHourlyList[i]["Rep"][j]["S"] + "mph",
+               "Wind Gust is " + threeHourlyList[i]["Rep"][j]["G"] + " mph",
+               "Wind Direction is " + threeHourlyList[i]["Rep"][j]["D"]]
+        return day
 
+    results = {}
     for i in range(numberOfDays):
-        print("----------------------------------------")
+        # print("----------------------------------------")
+
         date = threeHourlyList[i]["value"]
-        print(date[:-1] + "\n")
         threeHourlyListReport = threeHourlyList[i]["Rep"]
         numberOfTemperatures = len(threeHourlyListReport)
+
+        key = date[:-1] + "\n"
+        values = []
+
         for j in range(numberOfTemperatures):
             if threeHourlyList[i]["Rep"][j]["$"] == "0":
-                formatConsoleDisplay(midnight)
+                values.append(formatConsoleDisplay(midnight))
             elif threeHourlyList[i]["Rep"][j]["$"] == "180":
-                formatConsoleDisplay(threeam)
+                values.append(formatConsoleDisplay(threeam))
             elif threeHourlyList[i]["Rep"][j]["$"] == "360":
-                formatConsoleDisplay(sixam)
+                values.append(formatConsoleDisplay(sixam))
             elif threeHourlyList[i]["Rep"][j]["$"] == "540":
-                formatConsoleDisplay(nineam)
+                values.append(formatConsoleDisplay(nineam))
             elif threeHourlyList[i]["Rep"][j]["$"] == "720":
-                formatConsoleDisplay(midday)
+                values.append(formatConsoleDisplay(midday))
             elif threeHourlyList[i]["Rep"][j]["$"] == "900":
-                formatConsoleDisplay(threepm)
+                values.append(formatConsoleDisplay(threepm))
             elif threeHourlyList[i]["Rep"][j]["$"] == "1080":
-                formatConsoleDisplay(sixpm)
+                values.append(formatConsoleDisplay(sixpm))
             elif threeHourlyList[i]["Rep"][j]["$"] == "1260":
-                formatConsoleDisplay(ninepm)
+                values.append(formatConsoleDisplay(ninepm))
+        results[key] = values
 
+    return results
 
-def main():
-    print("Hello, Welcome to the program \n"
-          "A list of available locations will be shown below \n")
-
-    content = getJson()
-    locations = listOfLocations(content)
-
-    locationChoice = input("\nPlease select a location from the list: \n")
-    if locationChoice in locations:
-        print(f"Displaying weather forecast for {locationChoice}")
-        get3HourlyWeather(locations[locationChoice])
-
-
-if __name__ == '__main__':
-    main()
